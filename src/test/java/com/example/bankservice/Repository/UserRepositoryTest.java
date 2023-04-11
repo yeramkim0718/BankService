@@ -4,9 +4,11 @@ import com.example.bankservice.Entity.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 @DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class UserRepositoryTest {
 
     @Autowired
@@ -14,9 +16,8 @@ public class UserRepositoryTest {
 
     @Test
     public void saveTest() {
-        User user = User.builder()
-                .name("name1")
-                .build();
+        User user = new User();
+        user.setName("name1");
 
         User savedUser = userRepository.save(user);
 
