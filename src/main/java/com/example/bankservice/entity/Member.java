@@ -6,9 +6,9 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@Table (name="user")
+@Table (name="member")
 @NoArgsConstructor
-public class User {
+public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
