@@ -1,4 +1,4 @@
-package com.example.bankservice.entity;
+package com.example.bankservice.model.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;

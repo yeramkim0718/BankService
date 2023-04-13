@@ -1,6 +1,6 @@
 package com.example.bankservice.service;
 
-import com.example.bankservice.entity.Member;
+import com.example.bankservice.model.entity.Member;
 import com.example.bankservice.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

@@ -1,9 +1,10 @@
 package com.example.bankservice.controller;
 
-import com.example.bankservice.entity.Account;
+import com.example.bankservice.model.entity.Account;
+import com.example.bankservice.model.restresult.RestResult;
 import com.example.bankservice.service.AccountService;
+import com.example.bankservice.service.frontservice.AccountFrontService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,8 @@ public class AccountController {
 
     @Autowired
     AccountService accountService;
+    @Autowired
+    AccountFrontService accountFrontService;
 
     @PostMapping("/register")
     public ResponseEntity<Account> register(@RequestBody Account account) {
@@ -23,8 +26,8 @@ public class AccountController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<Page<Account>> list (Pageable pageable) {
-        return new ResponseEntity<>(accountService.getAll(pageable),HttpStatus.OK);
+    public RestResult list (Pageable pageable) {
+        return accountFrontService.getAll(pageable);
     }
 
 }

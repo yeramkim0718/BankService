@@ -1,6 +1,6 @@
 package com.example.bankservice.repository;
 
-import com.example.bankservice.entity.Account;
+import com.example.bankservice.model.entity.Account;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
