@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.*;
 public class AccountController {
 
     @Autowired
-    AccountService accountService;
-    @Autowired
     AccountFrontService accountFrontService;
 
+    @PostMapping ("/mapMember")
+    public RestResult mapMember (@RequestBody Account account) {
+        return accountFrontService.mapMember(account);
+    }
     @PostMapping("/register")
     public RestResult register(@RequestBody Account account) {
 

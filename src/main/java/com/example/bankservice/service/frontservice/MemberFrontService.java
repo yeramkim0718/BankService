@@ -28,13 +28,7 @@ public class MemberFrontService {
 
         RestResult restResult = RestResult.success();
         restResult.addData("members",members.getContent());
-
-        HashMap<String,Object> page = new HashMap<>();
-        page.put("totalPages",members.getTotalPages());
-        page.put("totalElements",members.getTotalElements());
-        page.put("pageNumber",members.getNumber());
-        page.put("itemSize",members.getSize());
-        restResult.addData("page",page);
+        restResult.addPage(members.getTotalPages(), members.getTotalElements(),members.getNumber(), members.getSize());
 
         return restResult;
 

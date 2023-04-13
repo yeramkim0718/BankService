@@ -21,19 +21,32 @@ public class AccountService {
     @Autowired
     MemberRepository memberRepository;
 
-    @Transactional
     public Account register(Account account) {
+
+        return accountRepository.save(account);
+    }
+
+    @Transactional
+    public Account mapMeber (Account account) {
 
         // account 객체로 넘어온 member Id값으로 member 조회후, account를 추가해서 두객체 save
         Optional<Member> member = memberRepository.findById(account.getMemberId());
-        if (member.isPresent()) {
-            Member m = member.get();
-            m.setAccounts(m.getAccounts() + "," + account.getAccountNumber());
-            memberRepository.save(m);
-            return accountRepository.save(account);
-        }
+        Optional<Account> account_ = accountRepository.findById(account.getAccountNumber());
 
-        return account;
+        if (member.isPresent() && account_.isPresent()) {
+            Member m = member.get();
+            Account a = account_.get();
+
+            if (m.getAccounts().equals("")) {
+                m.setAccounts(String.valueOf(account.getAccountNumber()));
+            }else {
+                m.setAccounts(m.getAccounts() + "," + String.valueOf(account.getAccountNumber()));
+            }
+            a.setMemberId(account.getMemberId());
+            memberRepository.save(m);
+            return accountRepository.save(a);
+        }
+        return null;
     }
 
     public Page<Account> getAll(Pageable pageable) {

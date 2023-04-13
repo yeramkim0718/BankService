@@ -26,18 +26,21 @@ public class AccountFrontService {
 
     }
 
+
     public RestResult getAll(Pageable pageable) {
         Page<Account> accounts = accountService.getAll(pageable);
 
         RestResult restResult = RestResult.success();
         restResult.addData("accounts",accounts.getContent());
-        HashMap<String,Object> page = new HashMap<>();
-        page.put("totalPages",accounts.getTotalPages());
-        page.put("totalElements",accounts.getTotalElements());
-        page.put("pageNumber",accounts.getNumber());
-        page.put("itemSize",accounts.getSize());
-        restResult.addData("page",page);
+        restResult.addPage(accounts.getTotalPages(),accounts.getTotalElements(),accounts.getNumber(), accounts.getSize());
 
+        return restResult;
+    }
+
+    public RestResult mapMember(Account account) {
+        Account m = accountService.mapMeber(account);
+        RestResult restResult = RestResult.success();
+        restResult.addData("account",account);
         return restResult;
     }
 }

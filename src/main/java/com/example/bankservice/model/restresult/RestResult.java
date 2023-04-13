@@ -4,6 +4,7 @@ package com.example.bankservice.model.restresult;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -33,6 +34,16 @@ public class RestResult {
 
     public RestResult addData (String key, Object value ) {
         this.data.put(key,value);
+        return this;
+    }
+
+    public RestResult addPage (int totalPages, long totalElements, int pageNumber, int itemSize) {
+        HashMap<String,Object> page = new HashMap<>();
+        page.put("totalPages",totalPages);
+        page.put("totalElements",totalElements);
+        page.put("pageNumber",pageNumber);
+        page.put("itemSize",itemSize);
+        this.addData("page",page);
         return this;
     }
 

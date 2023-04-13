@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/users")
 public class MemberController {
-    @Autowired
-    MemberService memberService;
 
     @Autowired
     MemberFrontService memberFrontService;
