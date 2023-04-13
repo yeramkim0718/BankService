@@ -13,6 +13,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
+    private String accounts;
+
     /*@OneToMany (cascade = CascadeType.ALL, mappedBy = "account")
     private List<Account> accounts = new ArrayList<Account>();*/
 }
