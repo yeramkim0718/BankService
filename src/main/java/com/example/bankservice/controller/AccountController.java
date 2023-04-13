@@ -6,8 +6,6 @@ import com.example.bankservice.service.AccountService;
 import com.example.bankservice.service.frontservice.AccountFrontService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,8 +18,9 @@ public class AccountController {
     AccountFrontService accountFrontService;
 
     @PostMapping("/register")
-    public ResponseEntity<Account> register(@RequestBody Account account) {
-        return new ResponseEntity<>(accountService.register(account), HttpStatus.OK);
+    public RestResult register(@RequestBody Account account) {
+
+        return accountFrontService.register(account);
 
     }
 

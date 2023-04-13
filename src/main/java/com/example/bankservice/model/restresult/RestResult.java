@@ -4,7 +4,6 @@ package com.example.bankservice.model.restresult;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -18,7 +17,7 @@ public class RestResult {
     // error message
     private String message;
 
-    private Map<String, Object> data = new HashMap<String, Object>();
+    private Map<String, Object> data;
 
     public RestResult() { }
 
