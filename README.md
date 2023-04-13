@@ -1,5 +1,6 @@
 # BankService
 
-1. Account
-
-2. User
+1. User
+- save, findAll
+2. Account
+- save, findAll
