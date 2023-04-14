@@ -1,6 +1,7 @@
 package com.example.bankservice.controller;
 
 import com.example.bankservice.model.dto.DepositDto;
+import com.example.bankservice.model.dto.TransferDto;
 import com.example.bankservice.model.dto.WithdrawDto;
 import com.example.bankservice.model.entity.Account;
 import com.example.bankservice.model.restresult.RestResult;
@@ -22,13 +23,6 @@ public class AccountController {
         return accountFrontService.mapMember(account);
     }
 
-    // 유저의 계좌 잔고에 입금하기 API
-    /*
-    1. 유저와 계좌를 할당하기 API
-    2. 유저의 계좌 잔고에 입금하기 API
-    3. 유저의 계좌 잔고에서 이체하기 API
-    4. 유저의 계좌 잔고에서 인출하기 API
-     */
     @PostMapping("/deposit")
     public RestResult deposit(@RequestBody DepositDto depositDto) {
         return accountFrontService.deposit(depositDto);
@@ -37,6 +31,12 @@ public class AccountController {
     @PostMapping("withdraw")
     public RestResult withdraw (@RequestBody WithdrawDto withdrawDto) {
         return accountFrontService.withdraw(withdrawDto);
+
+    }
+
+    @PostMapping("transfer")
+    public RestResult transfer (@RequestBody TransferDto transferDto) {
+        return accountFrontService.transfer(transferDto);
 
     }
     @PostMapping("/register")
