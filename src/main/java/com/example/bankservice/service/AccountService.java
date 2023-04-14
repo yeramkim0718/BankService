@@ -1,6 +1,7 @@
 package com.example.bankservice.service;
 
 import com.example.bankservice.model.dto.DepositDto;
+import com.example.bankservice.model.dto.WithdrawDto;
 import com.example.bankservice.model.entity.Account;
 import com.example.bankservice.model.entity.Member;
 import com.example.bankservice.repository.AccountRepository;
@@ -56,6 +57,13 @@ public class AccountService {
         accountRepository.save(account);
         return account;
 
+    }
+
+    public Account withdraw (WithdrawDto withdrawDto) {
+        Account account = accountRepository.findById(withdrawDto.getAccountNumber()).get();
+        account.setBalance(account.getBalance() - withdrawDto.getAmount());
+        accountRepository.save(account);
+        return account;
     }
 
     public Page<Account> getAll(Pageable pageable) {

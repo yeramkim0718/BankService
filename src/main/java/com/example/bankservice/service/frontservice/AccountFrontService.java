@@ -1,6 +1,7 @@
 package com.example.bankservice.service.frontservice;
 
 import com.example.bankservice.model.dto.DepositDto;
+import com.example.bankservice.model.dto.WithdrawDto;
 import com.example.bankservice.model.entity.Account;
 import com.example.bankservice.model.restresult.RestResult;
 import com.example.bankservice.service.AccountService;
@@ -30,9 +31,17 @@ public class AccountFrontService {
         Account deposited = accountService.deposit(depositDto);
 
         RestResult restResult = RestResult.success();
-        restResult.addData("deposited",deposited);
 
-        return restResult;
+        return restResult.addData("deposited",deposited);
+    }
+
+    public RestResult withdraw (WithdrawDto withdrawDto) {
+        Account withdrawed = accountService.withdraw(withdrawDto);
+
+        RestResult restResult = RestResult.success();
+
+        return restResult.addData("withdrawed",withdrawed);
+
     }
 
 

@@ -1,6 +1,7 @@
 package com.example.bankservice.controller;
 
 import com.example.bankservice.model.dto.DepositDto;
+import com.example.bankservice.model.dto.WithdrawDto;
 import com.example.bankservice.model.entity.Account;
 import com.example.bankservice.model.restresult.RestResult;
 import com.example.bankservice.service.frontservice.AccountFrontService;
@@ -31,6 +32,12 @@ public class AccountController {
     @PostMapping("/deposit")
     public RestResult deposit(@RequestBody DepositDto depositDto) {
         return accountFrontService.deposit(depositDto);
+    }
+
+    @PostMapping("withdraw")
+    public RestResult withdraw (@RequestBody WithdrawDto withdrawDto) {
+        return accountFrontService.withdraw(withdrawDto);
+
     }
     @PostMapping("/register")
     public RestResult register(@RequestBody Account account) {
