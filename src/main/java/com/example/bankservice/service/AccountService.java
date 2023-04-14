@@ -1,5 +1,6 @@
 package com.example.bankservice.service;
 
+import com.example.bankservice.model.dto.DepositDto;
 import com.example.bankservice.model.entity.Account;
 import com.example.bankservice.model.entity.Member;
 import com.example.bankservice.repository.AccountRepository;
@@ -27,7 +28,7 @@ public class AccountService {
     }
 
     @Transactional
-    public Account mapMeber (Account account) {
+    public Account mapMember (Account account) {
 
         // account 객체로 넘어온 member Id값으로 member 조회후, account를 추가해서 두객체 save
         Optional<Member> member = memberRepository.findById(account.getMemberId());
@@ -47,6 +48,14 @@ public class AccountService {
             return accountRepository.save(a);
         }
         return null;
+    }
+
+    public Account deposit (DepositDto depositDto) {
+        Account account = accountRepository.findById(depositDto.getAccountNumber()).get();
+        account.setBalance(depositDto.getAmount() + account.getBalance());
+        accountRepository.save(account);
+        return account;
+
     }
 
     public Page<Account> getAll(Pageable pageable) {
