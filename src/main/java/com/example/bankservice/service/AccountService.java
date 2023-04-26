@@ -1,8 +1,10 @@
 package com.example.bankservice.service;
 
-import com.example.bankservice.model.dto.DepositDto;
-import com.example.bankservice.model.dto.TransferDto;
-import com.example.bankservice.model.dto.WithdrawDto;
+import com.example.bankservice.exception.BankAccountNotFoundException;
+import com.example.bankservice.exception.BankRuntimeException;
+import com.example.bankservice.model.dto.DepositParam;
+import com.example.bankservice.model.dto.TransferParam;
+import com.example.bankservice.model.dto.WithdrawParam;
 import com.example.bankservice.model.entity.Account;
 import com.example.bankservice.model.entity.Member;
 import com.example.bankservice.model.entity.MemberBalanceHistory;
@@ -16,6 +18,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.Optional;
 
 @Service
@@ -35,42 +40,57 @@ public class AccountService {
         return accountRepository.save(account);
     }
 
-    @Transactional
-    public Account mapMember (Account account) {
-
-        // account 객체로 넘어온 member Id값으로 member 조회후, account를 추가해서 두객체 save
-        Optional<Member> member = memberRepository.findById(account.getMemberId());
-        Optional<Account> account_ = accountRepository.findById(account.getAccountNumber());
-
-        if (member.isPresent() && account_.isPresent()) {
-            Member m = member.get();
-            Account a = account_.get();
-
-            if (m.getAccounts().equals("")) {
-                m.setAccounts(String.valueOf(account.getAccountNumber()));
-            }else {
-                m.setAccounts(m.getAccounts() + "," + String.valueOf(account.getAccountNumber()));
-            }
-            a.setMemberId(account.getMemberId());
-            memberRepository.save(m);
-            return accountRepository.save(a);
+    public void testException() {
+        try {
+            new FileInputStream(new File("sdfd"));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
         }
-        return null;
+    }
+
+    public void testRuntimeException() {
+        new RuntimeException("asdfsdf");
     }
 
     @Transactional
-    public Account deposit (DepositDto depositDto) {
-        Account account = accountRepository.findById(depositDto.getAccountNumber()).get();
-        account.setBalance(depositDto.getAmount() + account.getBalance());
+    public void mapMember(Account account) {
+
+        // account 객체로 넘어온 member Id값으로 member 조회후, account를 추가해서 두객체 save
+        Optional<Member> memberOptional = memberRepository.findById(account.getMemberId());
+        Optional<Account> account_ = accountRepository.findById(account.getAccountNumber());
+
+        try {
+            if (memberOptional.isPresent() && account_.isPresent()) {
+                Member m = memberOptional.get();
+                Account a = account_.get();
+
+                if (m.getAccounts().equals("")) {
+                    m.setAccounts(String.valueOf(account.getAccountNumber()));
+                }else {
+                    m.setAccounts(m.getAccounts() + "," + String.valueOf(account.getAccountNumber()));
+                }
+                a.setMemberId(account.getMemberId());
+                memberRepository.save(m);
+                accountRepository.save(a);
+            }
+        }catch (Exception e) {
+            throw new BankRuntimeException("error", "adf");
+        }
+    }
+
+    @Transactional
+    public Account deposit (DepositParam depositParam) {
+        Account account = accountRepository.findById(depositParam.getAccountNumber()).get();
+        account.setBalance(depositParam.getAmount() + account.getBalance());
         accountRepository.save(account);
-        MemberBalanceHistory history = new MemberBalanceHistory(TransType.DEPOSIT,account.getMemberId(), depositDto.getAmount());
+        MemberBalanceHistory history = new MemberBalanceHistory(TransType.DEPOSIT,account.getMemberId(), depositParam.getAmount());
         memberBalanceHistoryRepository.save(history);
         return account;
 
     }
 
     @Transactional
-    public Account withdraw (WithdrawDto withdrawDto) {
+    public Account withdraw (WithdrawParam withdrawDto) {
         Account account = accountRepository.findById(withdrawDto.getAccountNumber()).get();
         account.setBalance(account.getBalance() - withdrawDto.getAmount());
         accountRepository.save(account);
@@ -79,7 +99,7 @@ public class AccountService {
     }
 
     @Transactional
-    public Account transfer (TransferDto transferDto) {
+    public Account transfer (TransferParam transferDto) {
 
         Account fromAccount = accountRepository.findById(transferDto.getFromAccountNumber()).get();
         Account toAccount = accountRepository.findById(transferDto.getToAccountNumber()).get();

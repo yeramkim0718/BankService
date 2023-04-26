@@ -4,6 +4,7 @@ import com.example.bankservice.model.entity.Member;
 import com.example.bankservice.model.restresult.RestResult;
 import com.example.bankservice.service.MemberService;
 import com.example.bankservice.service.frontservice.MemberFrontService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/users")
 public class MemberController {
 
-    @Autowired
     MemberFrontService memberFrontService;
 
     @PostMapping("/signup")
@@ -26,4 +26,8 @@ public class MemberController {
         return memberFrontService.getAll(pageable);
     }
 
+    @Autowired
+    public void setMemberFrontService(MemberFrontService memberFrontService) {
+        this.memberFrontService = memberFrontService;
+    }
 }
